@@ -51,3 +51,7 @@ link:https://www.netapp.com/company/legal/privacy-policy/["https://www.netapp.co
 == Código abierto
 
 Los archivos de aviso proporcionan información sobre los derechos de autor y las licencias de terceros utilizadas en el software NetApp.
+
+* https://library.netapp.com/ecm/ecm_get_file/ECMLP3392268["Aviso sobre ONTAP 9.19.1P91"^]
+* https://library.netapp.com/ecm/ecm_get_file/ecmlp3392264["Aviso para NetApp Data Director 26.10"^]
+
