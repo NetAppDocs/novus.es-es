@@ -1,0 +1,137 @@
+---
+sidebar: sidebar 
+permalink: use-ndd/learn-use-ndd.html 
+keywords: novus data director, ndd, mds, metadata management, ndd cli, ontap data server, mds-admin, ndd-admin 
+summary: 'Los Novus Data Directors (NDD) constituyen la base de la capa de metadatos de Novus y gestionan la distribución y la propiedad de los metadatos entre los nodos del MDS. Puedes utilizar la interfaz de línea de comandos de NDD para realizar tareas administrativas. Antes de implementar NetApp Novus en un entorno de producción, es fundamental comprender la estructura administrativa y las opciones de configuración.' 
+---
+= Descubre cómo utilizar Novus Data Director
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Los Novus Data Directors (NDD) constituyen la base de la capa de metadatos de Novus y gestionan la distribución y la propiedad de los metadatos entre los nodos del MDS. Puedes utilizar la interfaz de línea de comandos de NDD para realizar tareas administrativas. Antes de implementar NetApp Novus en un entorno de producción, es fundamental comprender la estructura administrativa y las opciones de configuración.
+
+
+
+[[novus-command-line-interface]]
+== Interfaz de línea de comandos de Novus
+
+Administras Novus Data Director desde la interfaz de línea de comandos de Linux de uno de los hosts MDS activos. Puedes conectarte a un host MDS de forma local o a través de SSH. Hay dos herramientas principales disponibles en la interfaz de línea de comandos de NDD.
+
+mds-admin:: Funciona en una instancia de un único nodo (un espacio de nombres) en varias áreas diferentes que se describen a continuación. El comando se conecta al endpoint de administración de pnfs-mds (puerto 50051 de forma predeterminada).
+ndd-admin:: Funciona en toda la implementación de NDD (todos los hosts y espacios de nombres). Permite preparar hosts, aprovisionar espacios de nombres y gestionar tareas de administración y mantenimiento, como copias de seguridad y restauración, así como la rotación de claves y las actualizaciones. Ejecuta `mds-admin` comandos en tu nombre cuando sea necesario.
+
+
+
+
+[[use-mds-admin-to-perform-novus-administration]]
+== Utiliza `mds-admin` para realizar la administración de Novus
+
+Puedes usar la CLI de NDD para realizar varias tareas administrativas en Novus Data Director. Estas tareas se dividen en varias categorías.
+
+
+CAUTION: Ten cuidado al ejecutar comandos en el NDD. Algunos comandos pueden modificar el estado del sistema o conllevar mayores riesgos. Otros, como los comandos de nodo (`force-remove`, `subtree-unlink`, `backup restore`), pueden causar daños.
+
+Estado, diagnósticos y soporte::
++
+--
+* Determina el estado del clúster NDD
+* Recopila un paquete de soporte e imprime la versión de protocolo
+* Limpia los archivos y registros que hayan quedado tras cualquier fallo del sistema
+* Comprobar o reparar el registro de `mds-admin` acciones
+
+
+--
+Pertenencia al clúster MDS y actualizaciones::
++
+--
+* Agregar, drenar, separar o eliminar nodos MDS, y adjuntar copias en espera
+* Ejecuta actualizaciones graduales y aplica los cambios de configuración nodo por nodo
+
+
+--
+Propiedad de los metadatos: cómo se distribuye el espacio de nombres entre los nodos del MDS::
++
+--
+* Listar, mover, dividir y reasignar subárboles entre nodos MDS, y aprobar propuestas de división automática
+* Reequilibrar los fragmentos y explicar dónde se coloca una ruta
+
+
+--
+Gestión del servidor de datos (backend de ONTAP)::
++
+--
+* Registrar, eliminar, validar y drenar servidores de datos, y establecer su estado
+* Comprobar la capacidad, configurar los pesos de ubicación, establecer las direcciones multivía y las versiones de NFS, y gestionar los montajes del servidor de datos en el host MDS
+* Reclama los marcadores de propiedad en las exportaciones y mantén el inventario de los hosts de servidores de datos
+
+
+--
+Ubicación y protección de datos::
++
+--
+* Averigua en qué servidor de datos se encuentra un archivo y, a continuación, muévelo, reasigna su ubicación o añade una copia espejo
+* Reparar réplicas en un servidor de datos, mover réplicas entre servidores de datos y completar los archivos hasta alcanzar el número de réplicas de destino
+* Gestiona el conjunto de archivos creados con antelación
+* Activar o desactivar la organización en niveles
+* Activar o desactivar wide striping para las rutas HPC
+
+
+--
+Política de espacios de nombres y gestión de datos::
++
+--
+* Establecer cuotas
+* Añade etiquetas de metadatos a las rutas y busca por etiqueta
+* Haz una copia de seguridad, verifica y restaura el catálogo de metadatos
+
+
+--
+Clientes, inquilinos y procesos complementarios::
++
+--
+* Forzar la caducidad de las sesiones de cliente, limpiar los registros de recuperación de clientes y gestionar los registros de identidad de clientes
+* Gestionar el enrutamiento VIP tras la recuperación
+* Crear, pausar, reanudar, tomar instantáneas, restaurar, migrar y limitar inquilinos
+* Registrar y limitar los recursos de los procesos auxiliares («companion»)
+
+
+--
+
+
+
+
+[[getting-started-using-the-ndd-cli]]
+== Primeros pasos con la CLI de NDD
+
+Puedes introducir algunos comandos básicos para empezar.
+
+.Acerca de esta tarea
+De forma predeterminada, `mds-admin` se conecta al servidor de metadatos del host local (127.0.0.1 en el puerto 50051). Para acceder a otra instancia de NDD, utiliza las opciones `--mds-host <address>` con `--mds-port <port>`. Asegúrate de utilizar la dirección MDS del host y no su dirección de gestión.
+
+.Antes de empezar
+Necesitas la dirección IP o el nombre de host de un host MDS y acceso SSH a él. También necesitas las credenciales adecuadas para iniciar sesión como usuario raíz.
+
+.Pasos
+. Conéctate a un host MDS mediante SSH.
++
+`ssh root@<mds-host>`
+
+. Muestra la versión de lanzamiento y la versión de protocolo.
++
+`mds-admin -V`
+
+. Obtén ayuda con los comandos
++
+[listing]
+----
+mds-admin --help
+mds-admin help status
+mds-admin help "ds list"
+----
++
+Ten en cuenta que  `--help` enumera todos los comandos disponibles y que  `help <command>` muestra las opciones de un comando concreto. Escribe un comando completo de varias palabras entre comillas dobles. También puedes buscar por palabra clave con  `mds-admin help -k <keyword>`.
+
+

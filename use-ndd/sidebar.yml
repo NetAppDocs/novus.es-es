@@ -1,0 +1,8 @@
+---
+section: use-ndd
+title: Utiliza Novus Data Director
+entries:
+- title: Más información sobre Novus Data Director
+  url: "/use-ndd/learn-use-ndd.html"
+- title: Comprueba el estado de una instancia de NDD
+  url: "/use-ndd/task-check-health.html"

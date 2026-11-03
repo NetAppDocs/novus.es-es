@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: learn-more/additional-resources.html 
+keywords: novus, learn more, additional resources 
+summary: Hay recursos adicionales a los que puedes acceder para ayudarte a administrar y dar soporte a Novus, así como para obtener más información sobre ONTAP y los productos y servicios relacionados de NetApp. 
+---
+= Recursos adicionales para los sistemas de almacenamiento Novus
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Hay recursos adicionales a los que puedes acceder para ayudarte a administrar y dar soporte a Novus, así como para obtener más información sobre ONTAP y los productos y servicios relacionados de NetApp.
+
+
+
+[[novus-and-related-resources]]
+== Novus y recursos relacionados
+
+* https://www.netapp.com/novus/["NetApp Novus"^]
+
+
+
+
+[[ontap-documentation]]
+== Documentación de ONTAP
+
+* https://docs.netapp.com/us-en/ontap/["ONTAP unificado"^]
+* https://docs.netapp.com/us-en/ontap-automation/["Automatización de ONTAP"^]
+
+
+
+
+[[netapp-support]]
+== NetApp soporte
+
+* https://mysupport.netapp.com/["Sitio de soporte de NetApp"^]
+* https://hwu.netapp.com/["NetApp Hardware Universe"^]
+* https://imt.netapp.com/["Herramienta NetApp Interoperability Matrix Tool"^]
+* https://kb.netapp.com/["NetApp base de conocimientos"^]
+

@@ -1,0 +1,39 @@
+---
+indexpage:
+  title: Documentación de Novus
+  summary: NetApp Novus es una solución de almacenamiento definido por software diseñada
+    para satisfacer las necesidades específicas de los clientes con computación a
+    exaescala y fábricas de IA a escala de gigavatios. Se apoya en una arquitectura
+    basada en NFS paralelo (pNFS) con servidores de datos ONTAP. Novus está diseñado
+    principalmente para entornos de nube e hiperescaladores; reduce la latencia y
+    los cuellos de botella, mantiene las GPU ocupadas y mejora drásticamente el rendimiento
+    y la escalabilidad.
+  keywords: novus, netapp novus, ontap data server, nfs, parallel nfs, pnfs, mds
+  lead: NetApp Novus es una solución de almacenamiento definido por software diseñada
+    para satisfacer las necesidades específicas de los clientes con computación a
+    exaescala y fábricas de IA a escala de gigavatios. Se apoya en una arquitectura
+    basada en NFS paralelo (pNFS) con servidores de datos ONTAP. Novus está diseñado
+    principalmente para entornos de nube e hiperescaladores; reduce la latencia y
+    los cuellos de botella, mantiene las GPU ocupadas y mejora drásticamente el rendimiento
+    y la escalabilidad.
+  tiles:
+  - title: Empezar
+    links:
+    - title: Conoce Novus
+      url: "/get-started/learn-novus.html"
+    - title: Arquitectura de Novus
+      url: "/get-started/novus-architecture.html"
+    - title: Requisitos
+      url: "/get-started/requirements.html"
+  - title: Utiliza Novus Data Director
+    links:
+    - title: Infórmate sobre cómo usar el NDD
+      url: "/use-ndd/learn-use-ndd.html"
+    - title: Evaluar el estado de NDD
+      url: "/use-ndd/task-check-health.html"
+  - title: Obtén más información
+    links:
+    - title: Preguntas frecuentes sobre los sistemas Novus
+      url: "/faq-novus.html"
+    - title: Recursos adicionales
+      url: "/learn-more/additional-resources.html"

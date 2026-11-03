@@ -1,0 +1,57 @@
+---
+sidebar: sidebar 
+permalink: get-started/novus-architecture.html 
+keywords: architecture, novus architecture, mds, ndd 
+summary: 'La arquitectura de Novus consta de instancias de Novus Data Director (NDD) y servidores de datos ONTAP. Los servidores de datos ONTAP admiten la ruta de datos, mientras que NDD gestiona los metadatos y el acceso de los clientes a través de Parallel NFS (pNFS).' 
+---
+= Arquitectura del sistema de almacenamiento Novus
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+La arquitectura de Novus consta de instancias de Novus Data Director (NDD) y servidores de datos ONTAP. Los servidores de datos ONTAP admiten la ruta de datos, mientras que NDD gestiona los metadatos y el acceso de los clientes a través de Parallel NFS (pNFS).
+
+
+
+[[ontap-data-server]]
+== Servidor de datos ONTAP
+
+Los servidores de datos son clústeres ONTAP diseñados específicamente para Novus. Estos clústeres implementan el plano de datos de Novus, almacenan datos de archivos y los sirven a los clientes de NFS. Un espacio de nombres de Novus puede distribuir sus datos de archivos entre varios clústeres ONTAP; un mismo clúster puede dar servicio a muchos espacios de nombres diferentes. Esta flexibilidad permite aumentar la capacidad y el rendimiento añadiendo servidores de datos según sea necesario.
+
+Los clientes acceden a los servidores de datos ONTAP mediante un cliente de NFS estándar, sin necesidad de software personalizado de NetApp. Una vez que un cliente obtiene el diseño de un archivo del Novus Data Director, puede leer y escribir datos del archivo directamente en los servidores de datos ONTAP a través de NFSv3 y, opcionalmente, a través de RDMA. Los datos masivos nunca pasan por el Novus Data Director, por lo que el tráfico de datos viaja en paralelo a través de los servidores de datos.
+
+Los servidores de datos no participan en la gestión del espacio de nombres. Almacenan los datos de cada archivo como archivos subyacentes en volúmenes ONTAP. Un servidor de datos ONTAP no mantiene los metadatos del espacio de nombres de Novus, como el árbol de directorios o cómo se distribuyen los archivos entre los servidores de datos.
+
+El AFF A90 para NetApp Novus es una versión del AFF A90 diseñada para Novus con ONTAP. Sus características incluyen:
+
+* Tarjetas NVRAM dobles adicionales
+* Adaptadores de red de alto ancho de banda
+* Configurado como un par estándar de ONTAP HA
+* Protege los datos con RAID-DP o RAID-TEC.
+
+
+Los clústeres ONTAP estándar no pueden utilizarse como servidores de datos de Novus; solo se admiten las plataformas diseñadas específicamente para Novus.
+
+
+
+[[novus-data-director]]
+== Novus Data Director
+
+Novus Data Director (NDD) es una implementación del rol del servidor de metadatos (MDS) en la arquitectura pNFS y proporciona el plano de metadatos de Novus. Un _MDS host_ es un servidor físico que ejecuta Linux, además de los servicios del protocolo MDS y los almacenes de metadatos.
+
+El NDD presenta cada espacio de nombres a los clientes como un único sistema de archivos. Es responsable de los metadatos del espacio de nombres: archivos y directorios, atributos de archivo, el mapa de dónde se almacenan los datos de cada archivo y el estado del protocolo necesario para coordinar el acceso de los clientes. Los clientes montan un espacio de nombres a través de su dirección IP virtual y se comunican con el NDD mediante NFSv4.2 con parallel NFS (pNFS). El NDD gestiona todas las operaciones de metadatos, como búsquedas, creación de archivos y cambios de atributos. Cuando un cliente abre un archivo, el NDD le proporciona un layout pNFS Flexible File, que le indica qué servidores de datos contienen los datos del archivo. Luego, el cliente puede hacer lecturas y escrituras directamente con los servidores de datos ONTAP; el NDD está en la ruta de metadatos, pero no en la ruta de datos.
+
+El NDD se implementa como software que se ejecuta en un clúster de al menos tres servidores dedicados. Combina los procesos del servidor de metadatos con una base de datos distribuida y replicada que almacena los metadatos del espacio de nombres en almacenamiento local cifrado. Cada espacio de nombres ejecuta sus propios procesos de servidor de metadatos en varios de estos servidores. Todos los servidores en buen estado anuncian la dirección IP virtual del espacio de nombres, lo que distribuye la carga de los clientes y permite que estos hagan una conmutación por error sin volver a montar. Como los metadatos definitivos residen en la base de datos replicada, un servidor puede fallar y reiniciarse sin perder el estado del espacio de nombres.
+
+La ubicación de los datos en los clústeres ONTAP la controla el NDD. Mantiene un registro de los servidores de datos, garantiza que cada uno de ellos esté disponible mediante sondeos ligeros de NFS y realiza un seguimiento de la capacidad libre de cada uno. Cuando se crea un archivo, el NDD selecciona los servidores de datos, crea los archivos de respaldo a través de NFS y registra sus ubicaciones. Si un servidor de datos deja de estar disponible, el NDD deja de colocar nuevos datos allí y recupera los layouts de cliente que apuntan a él.
+
+
+
+[[novus-deployment]]
+== Implementación de Novus
+
+La siguiente figura ilustra a grandes rasgos una implementación típica de Novus. Entre los aspectos más destacados se incluyen un único espacio de nombres con varios Novus Data Directors y nodos de servidor de datos ONTAP. Esta arquitectura ofrece alta disponibilidad y baja latencia para dar soporte a los servidores GPU del backend.
+
+image:novus-arch1.png["Arquitectura Novus"]

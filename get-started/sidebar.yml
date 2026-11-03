@@ -1,0 +1,16 @@
+---
+section: get-started
+title: Empezar
+entries:
+- title: Infórmate sobre tu sistema Novus
+  entries:
+  - title: Conoce Novus
+    url: "/get-started/learn-novus.html"
+  - title: Arquitectura
+    url: "/get-started/novus-architecture.html"
+  - title: Entorno y procesamiento
+    url: "/get-started/novus-environment-processing.html"
+- title: Requisitos de Novus
+  url: "/get-started/requirements.html"
+- title: Ejemplo de implementación de Novus
+  url: "/get-started/deployment-example.html"

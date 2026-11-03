@@ -1,0 +1,50 @@
+---
+sidebar: sidebar 
+permalink: faq-novus.html 
+keywords: novus, novus system, faq, frequently asked questions 
+summary: Esta lista de preguntas frecuentes ofrece respuestas a las dudas que puedas tener sobre tu sistema de almacenamiento Novus. Además, incluye conceptos y terminología que pueden resultarte útiles a la hora de conocer el producto con más detalle. 
+---
+= Preguntas frecuentes sobre los sistemas de almacenamiento Novus
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Esta lista de preguntas frecuentes ofrece respuestas a las dudas que puedas tener sobre tu sistema de almacenamiento Novus. Además, incluye conceptos y terminología que pueden resultarte útiles a la hora de conocer el producto con más detalle.
+
+.¿Qué protocolos admite NetApp Novus?
+Novus es compatible con los siguientes protocolos:
+
+* pNFS con NFS v4.2 (necesario para la disposición flexible de archivos de pNFS)
+* NFS sobre RDMA
+* NVIDIA GPUDirect
+
+
+.¿Es compatible Novus con la disposición flexible de archivos de pNFS?
+Sí, se admite el diseño de archivos flexible de pNFS. Para el diseño de archivos flexible con wide striping, necesitas un cliente de NFS en una distribución de Linux compatible. A fecha de octubre de 2026, solo el cliente de NFS incluido con Ubuntu 26.04 es compatible con wide striping.
+
+.¿Novus requiere un cliente de sistema de archivos personalizado?
+No. Novus funciona con clientes NFS estándar.
+
+.¿Novus admite la multitenencia?
+Sí--Novus ofrece una multitenencia segura mediante:
+
+* Aislamiento de espacios de nombres en la capa de metadatos
+* Aislamiento de red mediante subred/VLAN
+* Grupos de nodos: Novus Data Director, espacio de nombres y KVS dedicados
+* Proveedor de identidad y gestión de claves de cifrado por tenant
+* Servidores de datos dedicados para los inquilinos
+
+
+.¿Cuál es la capacidad de almacenamiento máxima de un clúster de Novus?
+La versión inicial de Novus admite hasta 600 pares HA de AFF A90 (sistemas). El límite total de almacenamiento de un clúster depende del tamaño de las unidades utilizadas.
+
+.¿Cómo se dividen y protegen los metadatos en los Novus Data Directors?
+Los metadatos se dividen en fragmentos entre grupos de nodos y se replican tres veces dentro de cada grupo de nodos. Un grupo de nodos está formado por tres Data Directors, por lo que la capa de metadatos siempre se amplía en múltiplos de tres. La fragmentación se hace por rango de claves; por ejemplo, un grupo de nodos contiene las claves de la A a la N y otro de la M a la Z, así que, a medida que se añaden grupos de nodos, las tablas de metadatos se particionan en el conjunto más amplio.
+
+.¿Se puede reutilizar un clúster ONTAP AFF A90 ya existente para Novus?
+No. Los controladores ONTAP existentes no pueden reutilizarse ni actualizarse para usarlos en una implementación de Novus. Debes adquirir un nuevo AFF A90 para NetApp Novus.
